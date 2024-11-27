@@ -1,6 +1,0 @@
-﻿services:
-  base.web:
-    image: base.web
-    build:
-      context: .
-      dockerfile: Base.Web/Dockerfile
