@@ -1,11 +1,12 @@
 using CleanArchitecture.Application;
-using CleanArchitecture.Application.Services;
+using CleanArchitecture.IoC;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 builder.Services.AddApplication();
+builder.Services.AddInfrastructureServices();
 
 var app = builder.Build();
 
