@@ -13,17 +13,19 @@ public class UserController(ISender mediator) : ControllerBase
     public async Task<IActionResult> CreateUser(CreateUserRequest request)
     {
         var command = new CreateUserCommand(request.Id);
-        
-        var user = await mediator.Send(command);
 
-        var response = new UserResponse(user);
-        return Created($"users/{user}", response);
+        var createUserResult = await mediator.Send(command);
+
+        return createUserResult.Match(
+            id => Created($"users/{createUserResult.Value}", createUserResult.Value),
+            error => Problem());
     }
 }
 
 public class UserResponse
 {
     public long Id { get; set; }
+
     public UserResponse(long user)
     {
         Id = user;

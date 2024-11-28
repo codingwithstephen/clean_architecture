@@ -1,11 +1,12 @@
+using ErrorOr;
 using MediatR;
 
 namespace CleanArchitecture.Application.Users.Commands.CreateUser;
 
-public class CreateUserCommandHandler: IRequestHandler<CreateUserCommand, long>
+public class CreateUserCommandHandler: IRequestHandler<CreateUserCommand, ErrorOr.ErrorOr<long>>
 {
-    public Task<long> Handle(CreateUserCommand request, CancellationToken cancellationToken)
+    public async Task<ErrorOr<long>> Handle(CreateUserCommand request, CancellationToken cancellationToken)
     {
-        return Task.FromResult(request.Id);
+        return request.Id;
     }
 }
