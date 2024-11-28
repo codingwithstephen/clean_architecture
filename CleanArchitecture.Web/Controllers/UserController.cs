@@ -1,24 +1,20 @@
-using CleanArchitecture.Application.Services;
+using CleanArchitecture.Application.Users.Commands.CreateUser;
 using CleanArchitecture.Contracts.Users;
+using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
 namespace CleanArchitecture.Web.Controllers;
 
 [ApiController]
 [Route("[controller]")]
-public class UserController: ControllerBase
+public class UserController(ISender mediator) : ControllerBase
 {
-    private readonly IUserService _userService;
-
-    public UserController(IUserService userService)
-    {
-        _userService = userService;
-    }
-
     [HttpPost]
-    public IActionResult CreateUser(CreateUserRequest request)
+    public async Task<IActionResult> CreateUser(CreateUserRequest request)
     {
-        var user = _userService.CreateUser(request.Id);
+        var command = new CreateUserCommand(request.Id);
+        
+        var user = await mediator.Send(command);
 
         var response = new UserResponse(user);
         return Created($"users/{user}", response);
