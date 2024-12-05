@@ -17,7 +17,7 @@ public class UserController(ISender mediator) : ControllerBase
         var createUserResult = await mediator.Send(command);
 
         return createUserResult.Match(
-            id => Created($"users/{createUserResult.Value}", createUserResult.Value),
+            user => Created($"users/{user.Id}", new UserResponse(user.Id)),
             error => Problem());
     }
 }
