@@ -5,17 +5,9 @@ using MediatR;
 
 namespace CleanArchitecture.Application.Users.Commands.CreateUser;
 
-public class CreateUserCommandHandler : IRequestHandler<CreateUserCommand, ErrorOr.ErrorOr<User>>
+public class CreateUserCommandHandler(IUserRepository userRepository, IUnitOfWork unitOfWork)
+    : IRequestHandler<CreateUserCommand, ErrorOr.ErrorOr<User>>
 {
-    private readonly IUserRepository _userRepository;
-    private readonly IUnitOfWork _unitOfWork;
-
-    public CreateUserCommandHandler(IUserRepository userRepository, IUnitOfWork unitOfWork)
-    {
-        _userRepository = userRepository;
-        _unitOfWork = unitOfWork;
-    }
-
     public async Task<ErrorOr<User>> Handle(CreateUserCommand request, CancellationToken cancellationToken)
     {
         var user = new User
@@ -23,8 +15,8 @@ public class CreateUserCommandHandler : IRequestHandler<CreateUserCommand, Error
             Id = new Random().Next(1, 1000000000)
         };
 
-        await _userRepository.AddUserAsync(user);
-        await _unitOfWork.CommitChangesAsync();
+        await userRepository.AddUserAsync(user);
+        await unitOfWork.CommitChangesAsync();
         return user;
     }
 }
