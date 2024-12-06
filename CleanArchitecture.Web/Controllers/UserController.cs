@@ -1,4 +1,6 @@
 using CleanArchitecture.Application.Users.Commands.CreateUser;
+using CleanArchitecture.Application.Users.Queries;
+using CleanArchitecture.Application.Users.Queries.GetUser;
 using CleanArchitecture.Contracts.Users;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
@@ -18,6 +20,18 @@ public class UserController(ISender mediator) : ControllerBase
 
         return createUserResult.Match(
             user => Created($"users/{user.Id}", new UserResponse(user.Id)),
+            error => Problem());
+    }
+
+    [HttpGet]
+    public async Task<IActionResult> GetUser(long userId)
+    {
+        var query = new GetUserQuery(userId);
+        
+        var getUserResult = await mediator.Send(query);
+        
+        return getUserResult.MatchFirst(
+            user => Ok(new UserResponse(user.Id)),
             error => Problem());
     }
 }
