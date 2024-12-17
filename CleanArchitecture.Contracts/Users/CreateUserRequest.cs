@@ -1,3 +1,3 @@
 namespace CleanArchitecture.Contracts.Users;
 
-public record CreateUserRequest(long Id);
+public record CreateUserRequest(long Id, string Username);

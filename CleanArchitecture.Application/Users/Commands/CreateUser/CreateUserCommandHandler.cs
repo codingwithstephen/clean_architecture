@@ -12,7 +12,8 @@ public class CreateUserCommandHandler(IUserRepository userRepository, IUnitOfWor
     {
         var user = new User
         {
-            Id = new Random().Next(1, 1000000000)
+            Id = new Random().Next(1, 1000000000),
+            Username = request.User.Username,
         };
 
         await userRepository.AddUserAsync(user);

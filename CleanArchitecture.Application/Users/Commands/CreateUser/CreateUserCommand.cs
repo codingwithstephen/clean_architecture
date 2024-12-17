@@ -3,4 +3,4 @@ using MediatR;
 
 namespace CleanArchitecture.Application.Users.Commands.CreateUser;
 
-public record CreateUserCommand(long Id): IRequest<ErrorOr.ErrorOr<User>>;
+public record CreateUserCommand(User User): IRequest<ErrorOr.ErrorOr<User>>;

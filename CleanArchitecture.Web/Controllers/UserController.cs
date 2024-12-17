@@ -2,6 +2,7 @@ using CleanArchitecture.Application.Users.Commands.CreateUser;
 using CleanArchitecture.Application.Users.Queries;
 using CleanArchitecture.Application.Users.Queries.GetUser;
 using CleanArchitecture.Contracts.Users;
+using CleanArchitecture.Domain;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
@@ -14,7 +15,13 @@ public class UserController(ISender mediator) : ControllerBase
     [HttpPost]
     public async Task<IActionResult> CreateUser(CreateUserRequest request)
     {
-        var command = new CreateUserCommand(request.Id);
+        var user = new User
+        {
+            Id = request.Id,
+            Username = request.Username,
+        };
+        
+        var command = new CreateUserCommand(user);
 
         var createUserResult = await mediator.Send(command);
 
